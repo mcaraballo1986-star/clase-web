@@ -1,78 +1,421 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taller IA & GenAI Workshop</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taller | Gestión de Proyectos de IA & GenAI</title>
+
+  <!-- Reveal.js (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" />
+
+  <style>
+    /* ---- Design system ---- */
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card:#101A33cc;
+      --stroke:#2A355A;
+      --text:#EAF0FF;
+      --muted:#B8C2E3;
+      --violet:#8B5CF6;
+      --violet2:#6A0DAD;
+      --cyan:#22D3EE;
+      --green:#34D399;
+      --amber:#F59E0B;
+      --red:#FB7185;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+
+    /* Background: “AI nebula” */
+    .reveal{
+      background:
+        radial-gradient(900px 500px at 15% 20%, rgba(139,92,246,.25), transparent 60%),
+        radial-gradient(700px 450px at 85% 25%, rgba(34,211,238,.18), transparent 55%),
+        radial-gradient(900px 600px at 55% 85%, rgba(106,13,173,.18), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .reveal h1,.reveal h2,.reveal h3{ text-transform: none; letter-spacing:-0.02em; }
+    .reveal h1{ font-size: 2.4em; }
+    .reveal h2{ font-size: 1.8em; }
+    .reveal p, .reveal li{ font-size: 0.95em; color: var(--muted); }
+    .reveal strong{ color: var(--text); }
+    .reveal .slides{ text-align:left; }
+    .reveal section{ padding: 8px 10px; }
+
+    /* Title + subtitle style */
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      font-size:.8em; color: var(--muted);
+      border:1px solid rgba(255,255,255,.12);
+      padding: 10px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      background: rgba(16,26,51,.25);
+    }
+    .dot{
+      width:9px;height:9px;border-radius:50%;
+      background: linear-gradient(135deg,var(--cyan),var(--violet));
+      box-shadow: 0 0 18px rgba(34,211,238,.35);
+    }
+    .accent{
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+
+    /* Layout helpers */
+    .grid2{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 22px; }
+    .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .grid4{ display:grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .stack{ display:flex; flex-direction:column; gap:14px; }
+    .center{ display:flex; align-items:center; justify-content:center; text-align:center; }
+
+    /* Cards */
+    .card{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .card h3{ margin: 0 0 8px 0; font-size: 1.1em; }
+    .meta{ font-size:.78em; color: var(--muted); opacity:.9; }
+
+    .pill-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px;}
+    .pill{
+      font-size: .75em;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+    }
+    .pill.violet{ border-color: rgba(139,92,246,.45); }
+    .pill.cyan{ border-color: rgba(34,211,238,.45); }
+    .pill.green{ border-color: rgba(52,211,153,.45); }
+    .pill.amber{ border-color: rgba(245,158,11,.45); }
+    .pill.red{ border-color: rgba(251,113,133,.45); }
+
+    /* Two-column compare */
+    .compare{
+      display:grid; grid-template-columns: 1fr 1fr; gap:18px;
+    }
+    .compare .side{
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+    }
+    .side h3{ margin:0 0 8px 0; }
+    .side.left{ background: rgba(255,255,255,.05); }
+    .side.right{ background: rgba(139,92,246,.12); border-color: rgba(139,92,246,.35); }
+
+    /* Risk tiles */
+    .tile{
+      border-radius: 18px;
+      padding: 16px 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      min-height: 130px;
+    }
+    .tile .icon{ font-size: 26px; margin-bottom: 8px; }
+    .tile .title{ font-weight:700; color: var(--text); margin-bottom:6px; }
+    .tile.red{ border-color: rgba(251,113,133,.35); background: rgba(251,113,133,.10); }
+    .tile.amber{ border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); }
+    .tile.cyan{ border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.10); }
+    .tile.gray{ border-color: rgba(184,194,227,.25); background: rgba(184,194,227,.08); }
+
+    /* Timeline / steps */
+    .steps{ display:grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+    .step{
+      border-radius: 18px;
+      padding: 14px 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(16,26,51,.35);
+    }
+    .step .n{
+      width: 34px; height:34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg,var(--violet),var(--cyan));
+      color: #060814; font-weight:800;
+      margin-bottom: 10px;
+    }
+    .step .t{ font-weight:800; color: var(--text); margin-bottom:6px; }
+
+    /* Footer / watermark */
+    .footer{
+      position: fixed;
+      left: 24px; bottom: 18px;
+      font-size: .7em;
+      color: rgba(184,194,227,.65);
+      z-index: 10;
+      user-select: none;
+    }
+    .footer b{ color: rgba(234,240,255,.85); }
+
+    /* Make lists tighter */
+    ul{ margin: 10px 0 0 18px; }
+    li{ margin: 6px 0; }
+
+    /* Reveal tweaks */
+    .reveal .progress{ height: 4px; }
+    .reveal .controls{ color: rgba(234,240,255,.75); }
+    .reveal .slide-number{ color: rgba(184,194,227,.65); }
+
+    /* Small screens */
+    @media (max-width: 980px){
+      .grid2,.compare{ grid-template-columns: 1fr; }
+      .grid4{ grid-template-columns: 1fr 1fr; }
+      .steps{ grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="presentation">
-        <section id="slide1" class="slide active">
-            <h1>Welcome to the Taller IA & GenAI Workshop</h1>
-            <p>Overview of the workshop agenda.</p>
-        </section>
-        <section id="slide2" class="slide">
-            <h2>What is Artificial Intelligence?</h2>
-            <p>Definition and key concepts.</p>
-        </section>
-        <section id="slide3" class="slide">
-            <h2>Introduction to Generative AI</h2>
-            <p>Understanding Generative AI technologies.</p>
-        </section>
-        <section id="slide4" class="slide">
-            <h2>Applications of AI</h2>
-            <p>Real-world applications of AI in various industries.</p>
-        </section>
-        <section id="slide5" class="slide">
-            <h2>Interactive Demo</h2>
-            <p>Hands-on experience with Generative AI tools.</p>
-        </section>
-        <section id="slide6" class="slide">
-            <h2>Future of AI</h2>
-            <p>Discussion on future trends in AI.</p>
-        </section>
-        <section id="slide7" class="slide">
-            <h2>Speaker Notes</h2>
-            <p>Important points to discuss during the presentation.</p>
-        </section>
-        <section id="slide8" class="slide">
-            <h2>Q&A</h2>
-            <p>Open the floor for questions.</p>
-        </section>
-    </div>
-    <div id="timer">00:00</div>
-    <div id="speaker-notes"></div>
+  <div class="footer"><b>Taller</b> · Gestión de Proyectos de IA & GenAI</div>
 
-    <script>
-        let slideIndex = 0;
-        showSlide(slideIndex);
+  <div class="reveal">
+    <div class="slides">
 
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            slides.forEach((slide, index) => {
-                slide.classList.toggle('active', index === n);
-            });
-            document.getElementById('timer').innerText = formatTime(n * 10); // Simulate timing
-        }
+      <!-- 1) Cover -->
+      <section class="center">
+        <div style="max-width: 980px;">
+          <div class="kicker"><span class="dot"></span> Perfiles mixtos · práctica + criterio ejecutivo</div>
+          <h1 style="margin:18px 0 6px 0;">Gestión de Proyectos de <span class="accent">IA & GenAI</span></h1>
+          <p style="max-width: 820px; margin: 0 auto;">
+            Cómo cambia el rol del PM: de “plan lineal” a <strong>experimento iterativo</strong>, con foco en <strong>riesgo</strong>, <strong>calidad</strong>, <strong>gobierno</strong> y <strong>monitoreo</strong>.
+          </p>
+          <div class="pill-row" style="justify-content:center; margin-top:18px;">
+            <span class="pill violet">Probabilístico</span>
+            <span class="pill cyan">RAG</span>
+            <span class="pill green">Guardrails</span>
+            <span class="pill amber">KPIs</span>
+            <span class="pill red">Riesgos</span>
+          </div>
+        </div>
+      </section>
 
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
+      <!-- 2) Agenda -->
+      <section>
+        <h2>Mapa del taller</h2>
+        <div class="grid2">
+          <div class="card">
+            <h3>Qué vas a llevarte hoy</h3>
+            <ul>
+              <li>Cómo cambia el <strong>éxito</strong>: umbrales, no binarios.</li>
+              <li>Riesgos clave: técnicos, éticos, legales y operativos.</li>
+              <li>Guía práctica de <strong>guardrails</strong> + <strong>monitoreo</strong>.</li>
+              <li>Un “catálogo” para entender prácticas: ML, LLM, RAG, agentes.</li>
+              <li>Casos para trabajar en equipo (con KPIs y plan de mitigación).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Cómo lo vamos a trabajar</h3>
+            <p class="meta">Ritmo: concepto breve → ejemplo → decisión PM → práctica en equipo</p>
+            <div class="pill-row">
+              <span class="pill violet">Decisiones</span>
+              <span class="pill cyan">Evidencia</span>
+              <span class="pill green">Responsabilidad</span>
+              <span class="pill amber">Trade-offs</span>
+            </div>
+            <p style="margin-top:12px;">
+              Regla del taller: <strong>menos buzzwords</strong>, más “qué harías vos el lunes”.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        document.addEventListener('keydown', function(event) {
-            const slides = document.querySelectorAll('.slide');
-            if(event.key === 'ArrowRight') {
-                slideIndex = (slideIndex + 1) % slides.length;
-                showSlide(slideIndex);
-            } else if(event.key === 'ArrowLeft') {
-                slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-                showSlide(slideIndex);
-            }
-        });
-    </script>
-</body>
-</html>
+      <!-- 3) Diferencia central -->
+      <section>
+        <h2>IA no es determinística</h2>
+        <div class="compare">
+          <div class="side left">
+            <h3>Proyectos tradicionales</h3>
+            <ul>
+              <li>Respuestas <strong>determinísticas</strong>.</li>
+              <li>Éxito: “funciona / no funciona”.</li>
+              <li>Riesgo: se gestiona como excepción.</li>
+              <li>QA: pruebas “cerradas” y reproducibles.</li>
+            </ul>
+          </div>
+          <div class="side right">
+            <h3>IA & GenAI</h3>
+            <ul>
+              <li>Comportamiento <strong>probabilístico</strong>.</li>
+              <li>Éxito: <strong>umbrales</strong> (lo suficientemente bueno).</li>
+              <li>Riesgo: parte estructural del ciclo.</li>
+              <li>QA: evaluación continua + datos + drift.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h3>Traducción PM (en una frase)</h3>
+          <p>
+            Planificar IA es planificar <strong>aprendizaje iterativo</strong> con <strong>métricas</strong>, no “construcción lineal cerrada”.
+          </p>
+        </div>
+      </section>
+
+      <!-- 4) Gestión de riesgos -->
+      <section>
+        <h2>Gestión de riesgos: el nuevo “core” del proyecto</h2>
+        <div class="grid3">
+          <div class="card">
+            <h3>Técnicos</h3>
+            <ul>
+              <li>Datos insuficientes / calidad</li>
+              <li><strong>Drift</strong> del modelo</li>
+              <li>Alucinaciones / errores</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Éticos</h3>
+            <ul>
+              <li>Sesgos</li>
+              <li>Impacto en personas</li>
+              <li>Explicabilidad</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Legales y operativos</h3>
+            <ul>
+              <li>Privacidad</li>
+              <li>Propiedad intelectual</li>
+              <li>Monitoreo, auditoría, incidentes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h3>Rutina PM recomendada</h3>
+          <p class="meta">Matriz de riesgos + mitigación + monitoreo continuo (no “a último momento”).</p>
+        </div>
+      </section>
+
+      <!-- 5) Catálogo: tarjetas -->
+      <section>
+        <h2>Catálogo AI & GenAI (versión PM)</h2>
+        <p>Qué es · qué entrega · qué vigilar</p>
+
+        <div class="grid3">
+          <div class="card">
+            <h3>Data Engineering</h3>
+            <p class="meta"><strong>Objetivo:</strong> datos confiables y accesibles</p>
+            <p class="meta"><strong>Entrega:</strong> pipelines, SLAs, gobierno</p>
+            <div class="pill-row">
+              <span class="pill cyan">Dependencias</span>
+              <span class="pill amber">Costos cloud</span>
+              <span class="pill red">Seguridad</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Machine Learning</h3>
+            <p class="meta"><strong>Objetivo:</strong> predecir/segmentar</p>
+            <p class="meta"><strong>Entrega:</strong> dataset, modelo, MLOps</p>
+            <div class="pill-row">
+              <span class="pill violet">Métricas</span>
+              <span class="pill amber">Drift</span>
+              <span class="pill red">Sesgos</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Deep Learning</h3>
+            <p class="meta"><strong>Objetivo:</strong> patrones en no estructurados</p>
+            <p class="meta"><strong>Entrega:</strong> training/inferencia, despliegue</p>
+            <div class="pill-row">
+              <span class="pill amber">Latencia</span>
+              <span class="pill red">Compliance</span>
+              <span class="pill violet">Explicabilidad</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>GenAI: LLM, RAG, Agentes</h2>
+
+        <div class="grid3">
+          <div class="card">
+            <h3>LLM</h3>
+            <p class="meta"><strong>Entrega:</strong> prompts, guardrails, evaluación, integración API</p>
+            <div class="pill-row">
+              <span class="pill red">Privacidad</span>
+              <span class="pill amber">Costo por token</span>
+              <span class="pill violet">Alucinaciones</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>RAG</h3>
+            <p class="meta"><strong>Entrega:</strong> embeddings + base vectorial + trazabilidad</p>
+            <div class="pill-row">
+              <span class="pill cyan">Cobertura</span>
+              <span class="pill amber">Frescura</span>
+              <span class="pill red">Permisos</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Agentes</h3>
+            <p class="meta"><strong>Entrega:</strong> tools/APIs, políticas, logs y auditoría</p>
+            <div class="pill-row">
+              <span class="pill red">Permisos</span>
+              <span class="pill amber">Pruebas E2E</span>
+              <span class="pill violet">Rollback</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6) GenAI en profundidad -->
+      <section>
+        <h2>GenAI en 60 segundos</h2>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>¿Cómo funciona?</h3>
+            <ul>
+              <li><strong>Modelos base (LLMs)</strong>: predicen la siguiente palabra (transformers).</li>
+              <li><strong>Embeddings</strong>: vectores para similitud semántica.</li>
+              <li><strong>RAG</strong>: combina LLM + conocimiento propio para reducir alucinaciones.</li>
+            </ul>
+            <p class="meta">Un LLM no “entiende” como humano: optimiza patrones estadísticos del lenguaje.</p>
+          </div>
+
+          <div class="card">
+            <h3>Qué cambia en el delivery</h3>
+            <ul>
+              <li>Se testea por <strong>comportamiento</strong>, no por reglas fijas.</li>
+              <li>Importa la <strong>curación de fuentes</strong> y permisos.</li>
+              <li>Éxito = <strong>calidad + seguridad + costo</strong> en equilibrio.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7) Riesgos -->
+      <section>
+        <h2>Riesgos de GenAI</h2>
+        <div class="grid4">
+          <div class="tile red">
+            <div class="icon">🤯</div>
+            <div class="title">Alucinaciones</div>
+            <div class="meta">Respuestas incorrectas con “confianza”.</div>
+          </div>
+          <div class="tile amber">
+            <div class="icon">⚖️</div>
+            <div class="title">Sesgos</div>
+            <div class="meta">Reproduce estereotipos → discriminación.</div>
+          </div>
+          <div class="tile cyan">
+            <div class="icon">🔒
