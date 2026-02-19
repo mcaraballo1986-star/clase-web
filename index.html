@@ -4,33 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taller IA & GenAI Workshop</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Taller IA & GenAI</h1>
-        <p>Workshop Presentation</p>
-    </header>
-    <main>
-        <section>
-            <h2>Introduction</h2>
-            <p>Welcome to the Taller IA & GenAI workshop, where we explore the latest advancements in AI and Generative AI.</p>
+    <div class="presentation">
+        <section id="slide1" class="slide active">
+            <h1>Welcome to the Taller IA & GenAI Workshop</h1>
+            <p>Overview of the workshop agenda.</p>
         </section>
-        <section>
-            <h2>Agenda</h2>
-            <ul>
-                <li>Overview of AI Technologies</li>
-                <li>Introduction to Generative AI</li>
-                <li>Hands-on Activities</li>
-                <li>Q&A Session</li>
-            </ul>
+        <section id="slide2" class="slide">
+            <h2>What is Artificial Intelligence?</h2>
+            <p>Definition and key concepts.</p>
         </section>
-        <section>
-            <h2>Conclusion</h2>
-            <p>Thank you for participating in the workshop! We hope you gained valuable insights into the world of AI.</p>
+        <section id="slide3" class="slide">
+            <h2>Introduction to Generative AI</h2>
+            <p>Understanding Generative AI technologies.</p>
         </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Taller IA & GenAI Workshop</p>
-    </footer>
+        <section id="slide4" class="slide">
+            <h2>Applications of AI</h2>
+            <p>Real-world applications of AI in various industries.</p>
+        </section>
+        <section id="slide5" class="slide">
+            <h2>Interactive Demo</h2>
+            <p>Hands-on experience with Generative AI tools.</p>
+        </section>
+        <section id="slide6" class="slide">
+            <h2>Future of AI</h2>
+            <p>Discussion on future trends in AI.</p>
+        </section>
+        <section id="slide7" class="slide">
+            <h2>Speaker Notes</h2>
+            <p>Important points to discuss during the presentation.</p>
+        </section>
+        <section id="slide8" class="slide">
+            <h2>Q&A</h2>
+            <p>Open the floor for questions.</p>
+        </section>
+    </div>
+    <div id="timer">00:00</div>
+    <div id="speaker-notes"></div>
+
+    <script>
+        let slideIndex = 0;
+        showSlide(slideIndex);
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === n);
+            });
+            document.getElementById('timer').innerText = formatTime(n * 10); // Simulate timing
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const slides = document.querySelectorAll('.slide');
+            if(event.key === 'ArrowRight') {
+                slideIndex = (slideIndex + 1) % slides.length;
+                showSlide(slideIndex);
+            } else if(event.key === 'ArrowLeft') {
+                slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+                showSlide(slideIndex);
+            }
+        });
+    </script>
 </body>
 </html>
