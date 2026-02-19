@@ -7,10 +7,15 @@
 
   <style>
     :root{
-      --max: 1120px;
-      --radius: 22px;
-      --radius2: 16px;
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --panel: rgba(16, 26, 51, .55);
+      --panel2: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
       --shadow: 0 22px 65px rgba(0,0,0,.45);
+
+      --text:#EAF0FF;
+      --muted:#B8C2E3;
 
       --violet:#8B5CF6;
       --violet2:#6A0DAD;
@@ -19,13 +24,10 @@
       --amber:#F59E0B;
       --red:#FB7185;
 
-      --bg0:#070A12;
-      --bg1:#0B1020;
-      --panel: rgba(16, 26, 51, .55);
-      --panel2: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.10);
-      --text:#EAF0FF;
-      --muted:#B8C2E3;
+      --radius: 22px;
+      --radius2: 16px;
+
+      --max: 1120px;
 
       --navbg: rgba(7,10,18,.45);
       --kbd: rgba(255,255,255,.08);
@@ -59,7 +61,7 @@
         radial-gradient(700px 450px at 85% 25%, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 55%),
         radial-gradient(900px 600px at 55% 85%, color-mix(in srgb, var(--violet2) 18%, transparent), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow: hidden; /* deck handles scroll */
+      overflow: hidden; /* deck controls scroll */
     }
 
     a{ color: inherit; }
@@ -155,7 +157,7 @@
       pointer-events:none;
     }
 
-    /* TYPO */
+    /* TYPE */
     .kicker{
       display:inline-flex;
       align-items:center;
@@ -191,7 +193,7 @@
     .meta p{ margin: 10px 0; max-width: 78ch; }
 
     /* CARDS / LAYOUT */
-    .grid2{
+    .hero-grid{
       margin-top: 22px;
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -504,7 +506,7 @@
     /* Responsive */
     @media (max-width: 980px){
       .links{ display:none; }
-      .grid2, .compare, .demo{ grid-template-columns: 1fr; }
+      .hero-grid, .compare, .demo{ grid-template-columns: 1fr; }
       .grid4{ grid-template-columns: 1fr 1fr; }
       .grid3{ grid-template-columns: 1fr; }
       .steps{ grid-template-columns: 1fr 1fr; }
@@ -525,7 +527,7 @@
         </div>
 
         <nav class="links" aria-label="Secciones">
-          <a href="#s1">Inicio</a>
+          <a href="#s1">Rol del PM</a>
           <a href="#s2">Comparativa</a>
           <a href="#s3">Catálogo</a>
           <a href="#s4">Demo</a>
@@ -546,19 +548,23 @@
   <!-- DECK -->
   <main id="deck">
 
-    <!-- Slide 1 -->
+    <!-- Slide 1: HERO + ROL -->
     <section class="slide" id="s1">
       <div class="container">
         <div class="reveal-in">
           <span class="kicker"><span class="spark"></span> Perfiles mixtos · práctico · orientado a decisiones</span>
-          <h1 class="title">Gestión de Proyectos de <span class="accent">IA & GenAI</span></h1>
+
+          <h1 class="title">
+            Gestión de Proyectos de <span class="accent">IA & GenAI</span>
+          </h1>
+
           <p class="subtitle">
             En IA, el éxito rara vez es binario. Se define por <b>umbrales</b>, se valida con <b>evidencia</b> y se sostiene con
             <b>monitoreo continuo</b>.
           </p>
         </div>
 
-        <div class="grid2" style="margin-top:18px;">
+        <div class="hero-grid">
           <div class="card reveal-in">
             <h2>El rol del Project Manager en IA</h2>
             <div class="meta">
@@ -577,6 +583,7 @@
                 se alineen con el marco normativo, políticas internas y valores de la organización.
               </p>
             </div>
+
             <div class="pill-row">
               <span class="pill violet">Probabilístico</span>
               <span class="pill cyan">Experimentación</span>
@@ -599,17 +606,12 @@
                 con responsables claros y criterios de acción.
               </p>
             </div>
-            <div class="pill-row">
-              <span class="pill red">Matriz de riesgos</span>
-              <span class="pill amber">Mitigación</span>
-              <span class="pill green">Monitoreo</span>
-            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 2 -->
+    <!-- Slide 2: COMPARATIVA -->
     <section class="slide" id="s2">
       <div class="container">
         <div class="section-head reveal-in">
@@ -651,7 +653,7 @@
       </div>
     </section>
 
-    <!-- Slide 3 -->
+    <!-- Slide 3: CATALOGO COMPLETO -->
     <section class="slide" id="s3">
       <div class="container">
         <div class="section-head reveal-in">
@@ -661,6 +663,7 @@
           </div>
         </div>
 
+        <!-- Fila 1 -->
         <div class="grid3">
           <div class="card reveal-in">
             <h3>Data Engineering</h3>
@@ -668,6 +671,12 @@
               <p><b>Objetivo:</b> datos confiables y accesibles (pipelines, lake/warehouse).</p>
               <p><b>Entregables:</b> ETL/ELT, calidad/SLAs, gobierno.</p>
               <p><b>Vigilar:</b> dependencias, costos cloud, seguridad y ownership.</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill cyan">Dependencias</span>
+              <span class="pill amber">Costos cloud</span>
+              <span class="pill red">Seguridad</span>
+              <span class="pill violet">Ownership</span>
             </div>
           </div>
 
@@ -678,6 +687,11 @@
               <p><b>Entregables:</b> dataset, modelo (batch/API), MLOps.</p>
               <p><b>Vigilar:</b> métricas, drift, sesgos, ciclo de mejora.</p>
             </div>
+            <div class="pill-row">
+              <span class="pill violet">Métricas</span>
+              <span class="pill amber">Drift</span>
+              <span class="pill red">Sesgos</span>
+            </div>
           </div>
 
           <div class="card reveal-in">
@@ -687,18 +701,120 @@
               <p><b>Entregables:</b> entrenamiento/inferencia, despliegue.</p>
               <p><b>Vigilar:</b> latencia, explicabilidad y compliance.</p>
             </div>
+            <div class="pill-row">
+              <span class="pill amber">Latencia</span>
+              <span class="pill violet">Explicabilidad</span>
+              <span class="pill red">Compliance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 2 -->
+        <div class="grid3" style="margin-top:14px;">
+          <div class="card reveal-in">
+            <h3>LLM</h3>
+            <div class="meta">
+              <p><b>Objetivo:</b> comprender y generar lenguaje (asistentes).</p>
+              <p><b>Entregables:</b> prompts, guardrails, evaluación, integración API.</p>
+              <p><b>Vigilar:</b> privacidad, alucinaciones, costos por token y límites.</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill red">Privacidad</span>
+              <span class="pill violet">Alucinaciones</span>
+              <span class="pill amber">Costo/token</span>
+            </div>
+          </div>
+
+          <div class="card reveal-in">
+            <h3>RAG</h3>
+            <div class="meta">
+              <p><b>Objetivo:</b> respuestas con conocimiento propio + trazabilidad.</p>
+              <p><b>Entregables:</b> embeddings, base vectorial, interacciones.</p>
+              <p><b>Vigilar:</b> cobertura, frescura, evaluación (exactitud/citas) y permisos.</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill cyan">Cobertura</span>
+              <span class="pill amber">Frescura</span>
+              <span class="pill red">Permisos</span>
+              <span class="pill violet">Citas</span>
+            </div>
+          </div>
+
+          <div class="card reveal-in">
+            <h3>Agentes</h3>
+            <div class="meta">
+              <p><b>Objetivo:</b> perciben–deciden–actúan usando herramientas.</p>
+              <p><b>Entregables:</b> tools/APIs, políticas, logs, auditoría.</p>
+              <p><b>Vigilar:</b> permisos, pruebas E2E, fallos seguros y rollback.</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill red">Permisos</span>
+              <span class="pill amber">Pruebas E2E</span>
+              <span class="pill violet">Rollback</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 3 -->
+        <div class="grid3" style="margin-top:14px;">
+          <div class="card soft reveal-in">
+            <h3>Multiagentes</h3>
+            <div class="meta">
+              <p>
+                Varios agentes con roles coordinados. Se requiere un orquestador (router/graph) y contratos de mensajes.
+                <b>Vigilar:</b> latencia/costo, observabilidad y fallos parciales.
+              </p>
+            </div>
+            <div class="pill-row">
+              <span class="pill amber">Latencia/costo</span>
+              <span class="pill violet">Observabilidad</span>
+              <span class="pill red">Fallos parciales</span>
+            </div>
+          </div>
+
+          <div class="card soft reveal-in">
+            <h3>Protocolos (MCP, A2A)</h3>
+            <div class="meta">
+              <p>
+                Estándares para interoperabilidad y comunicación segura agente↔herramienta/agente.
+                <b>Vigilar:</b> estandarización, compatibilidad y auditoría.
+              </p>
+            </div>
+            <div class="pill-row">
+              <span class="pill violet">Estandarización</span>
+              <span class="pill cyan">Compatibilidad</span>
+              <span class="pill red">Auditoría</span>
+            </div>
+          </div>
+
+          <div class="card soft reveal-in">
+            <h3>GenAI en profundidad</h3>
+            <div class="meta">
+              <p>
+                La IA Generativa crea contenido nuevo (texto, imágenes, audio, código). Su base típica son los LLM,
+                entrenados con miles de millones de palabras para predecir la siguiente palabra usando transformers.
+              </p>
+              <p>
+                Los <b>embeddings</b> representan significado en vectores para medir similitud semántica.
+                <b>RAG</b> combina un LLM con fuentes externas/propias para reducir alucinaciones y sumar trazabilidad.
+              </p>
+              <p>
+                Un LLM no “entiende” como un humano, pero captura relaciones semánticas, estilo y estructuras,
+                por lo que puede ser un asistente potente si está bien gobernado.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 4 (DEMO) -->
+    <!-- Slide 4: DEMO -->
     <section class="slide" id="s4">
       <div class="container">
         <div class="section-head reveal-in">
           <div>
             <h2>Mini demo: Alucinación vs RAG</h2>
-            <p>Misma pregunta. Dos comportamientos. Esto es lo que un PM debe prever y mitigar desde el diseño.</p>
+            <p>La misma pregunta. Dos comportamientos. Esto es lo que un PM debe prever y mitigar desde el diseño.</p>
           </div>
         </div>
 
@@ -739,7 +855,7 @@
       </div>
     </section>
 
-    <!-- Slide 5 -->
+    <!-- Slide 5: RIESGOS -->
     <section class="slide" id="s5">
       <div class="container">
         <div class="section-head reveal-in">
@@ -771,10 +887,18 @@
             <div class="d">Dilemas por uso/generación de contenido basado en material protegido.</div>
           </div>
         </div>
+
+        <div class="card reveal-in" style="margin-top:14px;">
+          <h3>Idea clave</h3>
+          <p class="meta">
+            Estos riesgos no son razones para evitar GenAI; son dimensiones críticas de gestión.
+            La diferencia entre un proyecto exitoso y uno problemático es anticiparlos y mitigarlos desde el diseño.
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- Slide 6 -->
+    <!-- Slide 6: GUARDRAILS -->
     <section class="slide" id="s6">
       <div class="container">
         <div class="section-head reveal-in">
@@ -806,15 +930,22 @@
             <div class="d">Definir uso, propiedad de datos y responsabilidad ante errores con legal/compliance.</div>
           </div>
         </div>
+
+        <div class="card reveal-in" style="margin-top:14px;">
+          <h3>Traducción PM</h3>
+          <p class="meta">
+            Convertí cada guardrail en un check de <b>Go/No-Go</b> antes de producción, y en un conjunto de métricas para operar.
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- Slide 7 -->
+    <!-- Slide 7: CASOS -->
     <section class="slide" id="s7">
       <div class="container">
         <div class="section-head reveal-in">
           <div>
-            <h2>Casos (dos por equipo)</h2>
+            <h2>Casos</h2>
             <p>Dinámica: identificar riesgos → proponer guardrails → definir KPIs → plan de mitigación y comunicación.</p>
           </div>
         </div>
@@ -1107,7 +1238,6 @@
 
       // init
       setMinutes(15);
-
     })();
   </script>
 </body>
