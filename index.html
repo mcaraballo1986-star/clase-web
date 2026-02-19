@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Taller | Gestión de Proyectos IA & GenAI (Ultra)</title>
-  <meta name="description" content="Deck web tipo slides con demo Alucinación vs RAG, timer para casos y speaker notes." />
+  <title>Taller | Gestión de Proyectos de IA & GenAI</title>
+  <meta name="description" content="Taller visual para perfiles mixtos: rol del PM en IA/GenAI, riesgos, guardrails, catálogo y casos." />
 
   <style>
-    /* =========================================================
-       THEME TOKENS (Dark default) — switchable via data-theme
-    ========================================================== */
     :root{
-      --max: 1120px;
-      --radius: 24px;
-      --radius2: 16px;
-      --shadow: 0 24px 70px rgba(0,0,0,.42);
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --panel: rgba(16, 26, 51, .55);
+      --panel2: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
+      --shadow: 0 22px 65px rgba(0,0,0,.45);
+
+      --text:#EAF0FF;
+      --muted:#B8C2E3;
 
       --violet:#8B5CF6;
       --violet2:#6A0DAD;
@@ -23,216 +25,104 @@
       --amber:#F59E0B;
       --red:#FB7185;
 
-      --bg0:#070A12;
-      --bg1:#0B1020;
-      --panel: rgba(16, 26, 51, .58);
-      --panel2: rgba(255,255,255,.07);
-      --stroke: rgba(255,255,255,.10);
-      --text:#EAF0FF;
-      --muted:#B8C2E3;
-      --navbg: rgba(7,10,18,.55);
-      --kbd: rgba(255,255,255,.08);
-      --chip: rgba(255,255,255,.08);
-      --good: rgba(52,211,153,.12);
-      --warn: rgba(245,158,11,.12);
-      --bad:  rgba(251,113,133,.12);
+      --radius: 22px;
+      --radius2: 16px;
 
-      --notesW: 420px;
-    }
-
-    [data-theme="light"]{
-      --bg0:#F7F8FC;
-      --bg1:#EEF1FB;
-      --panel: rgba(255,255,255,.78);
-      --panel2: rgba(0,0,0,.04);
-      --stroke: rgba(0,0,0,.10);
-      --text:#0B1020;
-      --muted:#3D4A72;
-      --navbg: rgba(247,248,252,.74);
-      --shadow: 0 18px 55px rgba(15, 28, 70, .12);
-      --kbd: rgba(0,0,0,.05);
-      --chip: rgba(0,0,0,.05);
-      --good: rgba(52,211,153,.16);
-      --warn: rgba(245,158,11,.16);
-      --bad:  rgba(251,113,133,.16);
+      --max: 1120px;
     }
 
     *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
+    html, body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       background:
-        radial-gradient(900px 520px at 15% 20%, color-mix(in srgb, var(--violet) 25%, transparent), transparent 60%),
-        radial-gradient(740px 480px at 86% 20%, color-mix(in srgb, var(--cyan) 18%, transparent), transparent 56%),
-        radial-gradient(900px 600px at 55% 86%, color-mix(in srgb, var(--violet2) 18%, transparent), transparent 60%),
+        radial-gradient(900px 500px at 15% 20%, rgba(139,92,246,.25), transparent 60%),
+        radial-gradient(700px 450px at 85% 25%, rgba(34,211,238,.18), transparent 55%),
+        radial-gradient(900px 600px at 55% 85%, rgba(106,13,173,.18), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow: hidden;
     }
-    a{ color: inherit; text-decoration: none; }
+
+    a{ color: inherit; }
     .container{ width: min(var(--max), 92vw); margin: 0 auto; }
 
-    /* =========================================================
-       Layout: deck + optional notes panel
-    ========================================================== */
-    .app{
-      position: fixed;
-      inset: 0;
-      display: grid;
-      grid-template-columns: 1fr;
-      transition: grid-template-columns .25s ease;
-    }
-    .app.notes-open{
-      grid-template-columns: 1fr var(--notesW);
-    }
-
-    /* =========================================================
-       Topbar
-    ========================================================== */
-    .topbar{
-      position: fixed;
-      left:0; right:0; top:0;
-      z-index: 90;
-      background: var(--navbg);
+    /* NAV */
+    .nav{
+      position: sticky;
+      top:0;
+      z-index: 50;
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid color-mix(in srgb, var(--stroke) 60%, transparent);
+      background: rgba(7,10,18,.45);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .topbar .inner{
+    .nav .inner{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
-      padding: 12px 0;
+      gap:16px;
+      padding: 14px 0;
     }
     .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight: 950;
+      display:flex; align-items:center; gap:10px;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      white-space: nowrap;
     }
     .spark{
       width: 10px; height: 10px; border-radius: 50%;
       background: linear-gradient(135deg, var(--cyan), var(--violet));
-      box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 35%, transparent);
-    }
-    .nav{
-      display:flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items:center;
-      justify-content:flex-end;
+      box-shadow: 0 0 20px rgba(34,211,238,.35);
     }
     .nav a{
-      font-size: .9rem;
-      color: color-mix(in srgb, var(--text) 86%, transparent);
+      text-decoration:none;
+      font-size: .92rem;
+      color: rgba(234,240,255,.85);
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid transparent;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
     }
-    .nav a:hover{
-      background: var(--panel2);
-      border-color: var(--stroke);
-      transform: translateY(-1px);
-    }
-    .tools{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-left: 8px;
-    }
-    .iconbtn{
-      border: 1px solid var(--stroke);
-      background: var(--panel2);
-      color: color-mix(in srgb, var(--text) 92%, transparent);
-      padding: 8px 10px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 900;
-      letter-spacing: -0.01em;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      transition: transform .2s ease, filter .2s ease;
-      user-select:none;
-    }
-    .iconbtn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
-    .kbd{
-      font-size: .75rem;
-      padding: 4px 8px;
-      border-radius: 10px;
-      background: var(--kbd);
-      border: 1px solid color-mix(in srgb, var(--stroke) 75%, transparent);
-      color: color-mix(in srgb, var(--muted) 95%, transparent);
-    }
+    .nav a:hover{ background: rgba(255,255,255,.06); }
+    .links{ display:flex; flex-wrap:wrap; gap: 6px; }
 
-    /* =========================================================
-       Deck: scroll-snap slides
-    ========================================================== */
-    .deck{
-      position: fixed;
-      inset: 54px 0 0 0;
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-      overscroll-behavior: contain;
-      padding-right: 0;
-      transition: padding-right .25s ease;
-    }
-    .app.notes-open .deck{
-      padding-right: 0; /* grid handles it */
-    }
-
-    .slide{
-      scroll-snap-align: start;
-      min-height: calc(100vh - 54px);
-      display:flex;
-      align-items:center;
-      padding: 42px 0;
-      position: relative;
-    }
-    .slide::after{
-      content:"";
-      position:absolute;
-      left:0; right:0; bottom: 12px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--stroke) 70%, transparent), transparent);
-      opacity: .7;
-      pointer-events:none;
-    }
-
-    /* Typography */
+    /* HERO */
+    .hero{ padding: 54px 0 24px 0; }
     .kicker{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      font-size:.86rem;
-      color: color-mix(in srgb, var(--muted) 95%, transparent);
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--panel) 55%, transparent);
+      font-size:.85rem;
+      color: rgba(184,194,227,.95);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(16,26,51,.25);
       padding: 10px 14px;
       border-radius: 999px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
     }
-    h1,h2,h3{ margin:0; letter-spacing: -0.03em; }
-    h1{ font-size: clamp(2.1rem, 4.2vw, 3.2rem); line-height: 1.03; }
-    h2{ font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.1; }
-    p{ margin: 0; color: var(--muted); line-height: 1.55; }
+    .title{
+      margin: 16px 0 10px 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
     .accent{
       background: linear-gradient(90deg, var(--violet), var(--cyan));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-
-    /* Layout helpers */
-    .grid2{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 16px; align-items: stretch; }
-    .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-    .grid4{ display:grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-    .stack{ display:flex; flex-direction: column; gap: 14px; }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 70ch;
+      line-height: 1.55;
+    }
+    .hero-grid{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: stretch;
+    }
 
     /* Cards */
     .card{
@@ -243,1204 +133,573 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
     }
-    .card.soft{ background: var(--panel2); box-shadow:none; }
-    .card h3{ font-size: 1.08rem; margin-bottom: 8px; }
-    ul{ margin: 10px 0 0 18px; color: var(--muted); }
-    li{ margin: 6px 0; }
-    strong{ color: color-mix(in srgb, var(--text) 96%, transparent); }
+    .card.soft{ background: rgba(255,255,255,.06); box-shadow:none; }
+    .card h2, .card h3{
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+    }
+    .card h2{ font-size: 1.25rem; }
+    .card h3{ font-size: 1.05rem; }
+    .meta{ color: var(--muted); font-size: .95rem; line-height: 1.6; }
+    .meta p{ margin: 10px 0; }
 
-    /* Pills */
     .pill-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; }
     .pill{
       font-size: .78rem;
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--chip);
-      color: color-mix(in srgb, var(--muted) 98%, transparent);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(184,194,227,.95);
       white-space: nowrap;
     }
-    .pill.violet{ border-color: color-mix(in srgb, var(--violet) 45%, transparent); }
-    .pill.cyan{ border-color: color-mix(in srgb, var(--cyan) 45%, transparent); }
-    .pill.green{ border-color: color-mix(in srgb, var(--green) 45%, transparent); }
-    .pill.amber{ border-color: color-mix(in srgb, var(--amber) 45%, transparent); }
-    .pill.red{ border-color: color-mix(in srgb, var(--red) 45%, transparent); }
+    .pill.violet{ border-color: rgba(139,92,246,.40); }
+    .pill.cyan{ border-color: rgba(34,211,238,.40); }
+    .pill.green{ border-color: rgba(52,211,153,.40); }
+    .pill.amber{ border-color: rgba(245,158,11,.40); }
+    .pill.red{ border-color: rgba(251,113,133,.40); }
+
+    /* Sections */
+    section.block{ padding: 26px 0; }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted);
+      max-width: 80ch;
+      line-height: 1.55;
+    }
 
     /* Compare */
-    .compare{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .compare{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .side{
       border-radius: var(--radius);
       padding: 18px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--panel2);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
     }
     .side.right{
-      background: color-mix(in srgb, var(--violet) 14%, transparent);
-      border-color: color-mix(in srgb, var(--violet) 35%, transparent);
+      background: rgba(139,92,246,.12);
+      border-color: rgba(139,92,246,.35);
     }
 
-    /* Tiles */
+    /* Grids */
+    .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .grid4{ display:grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+    /* Risk tiles */
     .tile{
       border-radius: var(--radius2);
       padding: 16px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--panel2);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
       min-height: 150px;
     }
     .tile .icon{ font-size: 26px; margin-bottom: 8px; }
-    .tile .t{ font-weight: 950; margin-bottom: 6px; }
-    .tile .d{ color: var(--muted); font-size: .92rem; }
-    .tile.red{ border-color: color-mix(in srgb, var(--red) 35%, transparent); background: var(--bad); }
-    .tile.amber{ border-color: color-mix(in srgb, var(--amber) 35%, transparent); background: var(--warn); }
-    .tile.cyan{ border-color: color-mix(in srgb, var(--cyan) 35%, transparent); background: color-mix(in srgb, var(--cyan) 10%, transparent); }
-    .tile.gray{ border-color: color-mix(in srgb, var(--muted) 22%, transparent); background: color-mix(in srgb, var(--muted) 9%, transparent); }
+    .tile .t{ font-weight: 900; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .tile .d{ color: var(--muted); font-size: .95rem; line-height: 1.5; }
+    .tile.red{ border-color: rgba(251,113,133,.35); background: rgba(251,113,133,.10); }
+    .tile.amber{ border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); }
+    .tile.cyan{ border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.10); }
+    .tile.gray{ border-color: rgba(184,194,227,.22); background: rgba(184,194,227,.08); }
 
     /* Steps */
     .steps{ display:grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
     .step{
       border-radius: var(--radius2);
       padding: 14px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--panel) 55%, transparent);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(16,26,51,.35);
     }
     .n{
       width: 34px; height: 34px;
       border-radius: 12px;
       display:flex; align-items:center; justify-content:center;
       background: linear-gradient(135deg, var(--violet), var(--cyan));
-      color: color-mix(in srgb, var(--bg0) 90%, #000);
-      font-weight: 950;
+      color: #070A12;
+      font-weight: 900;
       margin-bottom: 10px;
     }
-    .step .t{ font-weight: 950; margin-bottom: 6px; }
-    .step .d{ color: var(--muted); font-size: .92rem; }
+    .step .t{ font-weight: 900; margin-bottom: 6px; }
+    .step .d{ color: var(--muted); font-size: .95rem; line-height: 1.5; }
 
     /* Cases */
     .cases{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .case{
       border-radius: var(--radius);
       padding: 18px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--panel2);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
     }
-    .tag{
+    .case .tag{
       display:inline-flex;
       gap:8px;
       align-items:center;
       font-size: .78rem;
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--panel) 40%, transparent);
-      color: color-mix(in srgb, var(--muted) 98%, transparent);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(16,26,51,.25);
+      color: rgba(184,194,227,.95);
       margin-bottom: 10px;
     }
     .case h3{ margin: 0 0 8px 0; }
-    .case p{ color: var(--muted); }
+    .case p{ margin: 0; color: var(--muted); line-height: 1.6; }
 
-    /* =========================================================
-       Demo: Hallucination vs RAG
-    ========================================================== */
-    .demo{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .demo .box{
-      border-radius: var(--radius);
-      padding: 16px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--panel2);
-    }
-    .demo label{
-      display:block;
-      font-weight: 900;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-    .demo textarea{
-      width: 100%;
-      min-height: 96px;
-      resize: vertical;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--bg0) 60%, transparent);
-      color: var(--text);
-      outline: none;
-      font-size: .95rem;
-      line-height: 1.45;
-    }
-    [data-theme="light"] .demo textarea{
-      background: rgba(255,255,255,.78);
-    }
-    .demo .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 10px;
-      align-items:center;
-    }
-    .btn{
-      border: 1px solid var(--stroke);
-      background: var(--panel2);
-      color: color-mix(in srgb, var(--text) 92%, transparent);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 950;
-      letter-spacing: -0.01em;
-      user-select:none;
-      transition: transform .2s ease, filter .2s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
-    .btn.primary{
-      border-color: transparent;
-      color: color-mix(in srgb, var(--bg0) 92%, #000);
-      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(34,211,238,.70));
-    }
-    .btn.bad{
-      border-color: color-mix(in srgb, var(--red) 45%, transparent);
-      background: color-mix(in srgb, var(--red) 12%, transparent);
-    }
-    .btn.good{
-      border-color: color-mix(in srgb, var(--green) 45%, transparent);
-      background: color-mix(in srgb, var(--green) 12%, transparent);
-    }
-    .answer{
-      margin-top: 12px;
-      border-radius: 18px;
-      padding: 14px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--panel) 55%, transparent);
-    }
-    .answer .hdr{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 8px;
-    }
-    .badge{
-      font-size: .78rem;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: var(--chip);
-      color: color-mix(in srgb, var(--muted) 98%, transparent);
-      white-space: nowrap;
-    }
-    .badge.red{ border-color: color-mix(in srgb, var(--red) 45%, transparent); background: var(--bad); }
-    .badge.green{ border-color: color-mix(in srgb, var(--green) 45%, transparent); background: var(--good); }
-    .badge.cyan{ border-color: color-mix(in srgb, var(--cyan) 45%, transparent); background: color-mix(in srgb, var(--cyan) 10%, transparent); }
-
-    .sources{
-      margin-top: 10px;
-      display:none;
-      gap:8px;
-      flex-direction:column;
-    }
-    .source{
-      border-radius: 14px;
-      padding: 10px 12px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: rgba(255,255,255,.05);
-      color: color-mix(in srgb, var(--muted) 98%, transparent);
-      font-size: .88rem;
-      line-height: 1.45;
+    footer{
+      padding: 30px 0 44px 0;
+      color: rgba(184,194,227,.65);
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin-top: 26px;
     }
 
-    /* =========================================================
-       Timer modal
-    ========================================================== */
-    .modal-backdrop{
-      position: fixed;
-      inset:0;
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 120;
-      padding: 18px;
-    }
-    .modal{
-      width: min(720px, 96vw);
-      border-radius: var(--radius);
-      border: 1px solid color-mix(in srgb, var(--stroke) 80%, transparent);
-      background: color-mix(in srgb, var(--panel) 75%, transparent);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-    .modal h3{ margin-bottom: 8px; }
-    .modal .row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      margin-top: 10px;
-    }
-    .time{
-      font-variant-numeric: tabular-nums;
-      font-size: clamp(2.1rem, 4vw, 3rem);
-      font-weight: 1000;
-      letter-spacing: -0.03em;
-    }
-    .inputs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .inputs input{
-      width: 120px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--stroke) 85%, transparent);
-      background: color-mix(in srgb, var(--bg0) 60%, transparent);
-      color: var(--text);
-      outline: none;
-      font-weight: 900;
-    }
-    [data-theme="light"] .inputs input{ background: rgba(255,255,255,.78); }
-
-    .tiny{ font-size: .9rem; color: var(--muted); line-height:1.4; }
-
-    /* =========================================================
-       Notes panel (Speaker Notes)
-    ========================================================== */
-    .notes{
-      display:none;
-      position: relative;
-      border-left: 1px solid color-mix(in srgb, var(--stroke) 75%, transparent);
-      background: color-mix(in srgb, var(--navbg) 85%, transparent);
-      backdrop-filter: blur(12px);
-      padding: 68px 14px 14px 14px; /* room for header */
-      overflow: auto;
-    }
-    .app.notes-open .notes{
-      display:block;
-    }
-    .notes .head{
-      position: sticky;
-      top:0;
-      margin-top: -54px;
-      padding-top: 54px;
-      padding-bottom: 12px;
-      background: color-mix(in srgb, var(--navbg) 92%, transparent);
-      border-bottom: 1px solid color-mix(in srgb, var(--stroke) 70%, transparent);
-      z-index: 2;
-    }
-    .notes .title{
-      font-weight: 1000;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-    .notes .body{
-      padding-top: 10px;
-      color: color-mix(in srgb, var(--muted) 98%, transparent);
-      line-height: 1.55;
-      font-size: .95rem;
-    }
-    .notes .body ul{ margin: 8px 0 0 18px; }
-
-    /* =========================================================
-       HUD
-    ========================================================== */
-    .hud{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      z-index: 85;
-      pointer-events:none;
-    }
-    .progress{ height: 4px; background: color-mix(in srgb, var(--stroke) 55%, transparent); }
-    .bar{
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--violet), var(--cyan));
-      transform-origin: left;
-    }
-    .hud-inner{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding: 10px 14px;
-      color: color-mix(in srgb, var(--muted) 92%, transparent);
-      font-size: .85rem;
-    }
-    .hint{ display:flex; gap:8px; align-items:center; opacity: .95; }
-
-    /* =========================================================
-       Animations (Intersection-based)
-    ========================================================== */
-    .reveal-in{
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity .65s ease, transform .65s ease;
-      will-change: opacity, transform;
-    }
-    .reveal-in.is-visible{ opacity: 1; transform: translateY(0); }
-
-    /* Responsive */
     @media (max-width: 980px){
-      .nav{ display:none; }
-      .grid2, .compare, .demo{ grid-template-columns: 1fr; }
-      .grid4{ grid-template-columns: 1fr 1fr; }
+      .hero-grid{ grid-template-columns: 1fr; }
+      .compare{ grid-template-columns: 1fr; }
       .grid3{ grid-template-columns: 1fr; }
+      .grid4{ grid-template-columns: 1fr 1fr; }
       .steps{ grid-template-columns: 1fr 1fr; }
       .cases{ grid-template-columns: 1fr; }
-      .app.notes-open{ grid-template-columns: 1fr; }
-      .app.notes-open .notes{ display:none; } /* hide notes on small screens */
+      .links{ display:none; }
     }
   </style>
 </head>
 
-<body data-theme="dark">
-  <div class="app" id="app">
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="container">
-        <div class="inner">
-          <div class="brand">
-            <span class="spark"></span>
-            Taller IA & GenAI · Ultra
-          </div>
+<body>
 
-          <nav class="nav" aria-label="Navegación">
-            <a href="#s1">Inicio</a>
-            <a href="#s2">Rol</a>
-            <a href="#s3">Comparativa</a>
-            <a href="#s4">Riesgos</a>
-            <a href="#s5">Catálogo</a>
-            <a href="#s6">Demo RAG</a>
-            <a href="#s7">Guardrails</a>
-            <a href="#s8">Casos</a>
-          </nav>
-
-          <div class="tools" aria-label="Herramientas">
-            <button class="iconbtn" id="notesBtn" type="button" aria-pressed="false" title="Speaker Notes">
-              📝 <span class="kbd">S</span>
-            </button>
-            <button class="iconbtn" id="timerBtn" type="button" title="Timer para equipos">
-              ⏱️ <span class="kbd">R</span>
-            </button>
-            <button class="iconbtn" id="themeBtn" type="button" aria-pressed="false" title="Cambiar tema">
-              🌓 <span class="kbd">T</span>
-            </button>
-            <button class="iconbtn" id="nextBtn" type="button" title="Siguiente slide">
-              ↓ <span class="kbd">J</span>
-            </button>
-          </div>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="container">
+      <div class="inner">
+        <div class="brand">
+          <span class="spark"></span>
+          Taller IA & GenAI
         </div>
-      </div>
-    </header>
 
-    <!-- Deck -->
-    <div class="deck" id="deck">
-
-      <!-- Slide 1 -->
-      <section class="slide" id="s1" data-notes="
-<b>Objetivo:</b> abrir con la idea clave: IA no es determinística → éxito por umbrales.
-<ul>
-<li>Decí: &quot;No buscamos cero error. Buscamos riesgo controlado + calidad monitoreada&quot;.</li>
-<li>Pedí a sala: un ejemplo de sistema &quot;probabilístico&quot; (recomendador, fraude, chatbot).</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <div class="kicker reveal-in"><span class="spark"></span> Perfiles mixtos · visual · decisiones PM</div>
-            <h1 class="reveal-in">
-              Gestión de Proyectos de <span class="accent">IA & GenAI</span>
-            </h1>
-            <p class="reveal-in" style="max-width: 75ch;">
-              IA no es “funciona/no funciona”. Es un sistema <strong>probabilístico</strong>, con éxito definido por
-              <strong>umbrales</strong> y <strong>monitoreo continuo</strong>.
-            </p>
-
-            <div class="card reveal-in">
-              <h3>Regla del taller</h3>
-              <p>Menos buzzwords. Más: “¿qué harías vos el lunes?”</p>
-              <div class="pill-row">
-                <span class="pill violet">Probabilístico</span>
-                <span class="pill cyan">RAG</span>
-                <span class="pill green">Guardrails</span>
-                <span class="pill amber">KPIs</span>
-                <span class="pill red">Riesgos</span>
-              </div>
-            </div>
-
-            <div class="card soft reveal-in">
-              <h3>Atajos</h3>
-              <p class="meta">
-                <span class="kbd">J</span> sig. · <span class="kbd">K</span> ant. · <span class="kbd">Space</span> sig. ·
-                <span class="kbd">T</span> tema · <span class="kbd">S</span> notas · <span class="kbd">R</span> timer ·
-                <span class="kbd">G</span> inicio
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 2 -->
-      <section class="slide" id="s2" data-notes="
-<b>Mensaje:</b> el PM en IA es garante de decisiones con evidencia.
-<ul>
-<li>Recalcar: riesgos técnicos + éticos + legales + operativos.</li>
-<li>Conectar con práctica: matriz de riesgos + monitoreo continuo.</li>
-</ul>
-">
-        <div class="container">
-          <div class="grid2">
-            <div class="card reveal-in">
-              <h2>Rol del Project Manager en IA</h2>
-              <p>
-                Reconocer la naturaleza probabilística y planificar como <strong>experimentación iterativa</strong>.
-                Ser garante de alineación con <strong>marco normativo</strong>, políticas internas y valores.
-              </p>
-              <div class="pill-row">
-                <span class="pill violet">Iteración</span>
-                <span class="pill cyan">Evidencia</span>
-                <span class="pill green">Monitoreo</span>
-                <span class="pill amber">Trade-offs</span>
-                <span class="pill red">Mitigación</span>
-              </div>
-            </div>
-
-            <div class="card soft reveal-in">
-              <h3>Checklist rápido</h3>
-              <ul>
-                <li>¿Métricas + umbrales definidos?</li>
-                <li>¿Matriz de riesgos + responsables?</li>
-                <li>¿Guardrails (HITL, RAG, compliance)?</li>
-                <li>¿Monitoreo: calidad, drift, latencia, costo?</li>
-                <li>¿Auditoría y trazabilidad?</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 3 -->
-      <section class="slide" id="s3" data-notes="
-<b>Dinámica:</b> pedí a la sala que diga qué cambia en QA y en la definición de Done.
-<ul>
-<li>Remarcar: umbrales + test continuo + drift.</li>
-<li>Conectar con riesgos y guardrails.</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Tradicional vs IA</h2>
-            <p class="reveal-in" style="max-width: 80ch;">
-              Determinismo vs probabilismo cambia planificación, QA y definición de éxito.
-            </p>
-
-            <div class="compare">
-              <div class="side reveal-in">
-                <h3>Proyectos tradicionales</h3>
-                <ul>
-                  <li>Respuestas <strong>determinísticas</strong>.</li>
-                  <li>Éxito: “funciona/no funciona”.</li>
-                  <li>QA: pruebas reproducibles y cerradas.</li>
-                  <li>Riesgo como excepción.</li>
-                </ul>
-              </div>
-
-              <div class="side right reveal-in">
-                <h3>IA & GenAI</h3>
-                <ul>
-                  <li>Comportamiento <strong>probabilístico</strong>.</li>
-                  <li>Éxito: <strong>umbrales relativos</strong>.</li>
-                  <li>QA: evaluación continua + drift.</li>
-                  <li>Riesgo como parte del ciclo.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="card reveal-in">
-              <h3>Traducción PM</h3>
-              <p>Planificar IA = planificar un sistema vivo que se ajusta con evidencia, métricas y control de riesgos.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 4 -->
-      <section class="slide" id="s4" data-notes="
-<b>Tips:</b> usá ejemplos rápidos:
-<ul>
-<li>Alucinación: &quot;inventó política de devolución&quot;.</li>
-<li>Sesgo: recomendación/score que discrimina.</li>
-<li>Privacidad: pegar datos sensibles en prompt.</li>
-<li>Copyright: generar contenido basado en obra protegida.</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Riesgos de GenAI</h2>
-            <p class="reveal-in" style="max-width: 85ch;">
-              No son razones para evitar GenAI: son aspectos críticos de gestión. El diferencial del PM es anticiparlos y mitigarlos desde el diseño.
-            </p>
-
-            <div class="grid4">
-              <div class="tile red reveal-in">
-                <div class="icon">🤯</div>
-                <div class="t">Alucinaciones</div>
-                <div class="d">Respuestas incorrectas con gran seguridad (ej.: inventa políticas).</div>
-              </div>
-              <div class="tile amber reveal-in">
-                <div class="icon">⚖️</div>
-                <div class="t">Sesgos</div>
-                <div class="d">Reproduce estereotipos → puede derivar en discriminación.</div>
-              </div>
-              <div class="tile cyan reveal-in">
-                <div class="icon">🔒</div>
-                <div class="t">Privacidad</div>
-                <div class="d">Uso de datos sensibles sin medidas → riesgo regulatorio.</div>
-              </div>
-              <div class="tile gray reveal-in">
-                <div class="icon">©️</div>
-                <div class="t">Copyright</div>
-                <div class="d">Dilemas de derechos de autor y propiedad intelectual.</div>
-              </div>
-            </div>
-
-            <div class="grid3" style="margin-top: 12px;">
-              <div class="card soft reveal-in">
-                <h3>Técnicos</h3>
-                <p>Datos insuficientes · drift · alucinaciones · integraciones</p>
-              </div>
-              <div class="card soft reveal-in">
-                <h3>Éticos</h3>
-                <p>Sesgos · impacto en personas · explicabilidad</p>
-              </div>
-              <div class="card soft reveal-in">
-                <h3>Legales/operativos</h3>
-                <p>Privacidad · copyright · auditoría · incidentes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 5 -->
-      <section class="slide" id="s5" data-notes="
-<b>Cómo presentarlo:</b> no memorizar definiciones, sino 'qué vigila el PM'.
-<ul>
-<li>En cada card, pedí 1 KPI posible (latencia, tasa de alucinación, exactitud con citas, etc.).</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Catálogo AI & GenAI (visión PM)</h2>
-            <p class="reveal-in">Qué es · qué entrega · qué vigilar (foco riesgos/éxito)</p>
-
-            <div class="grid3">
-              <div class="card reveal-in">
-                <h3>Data Engineering</h3>
-                <p><strong>Objetivo:</strong> datos confiables y accesibles.</p>
-                <p><strong>Entregables:</strong> ETL/ELT, SLAs, gobierno.</p>
-                <div class="pill-row">
-                  <span class="pill cyan">Dependencias</span>
-                  <span class="pill amber">Costos cloud</span>
-                  <span class="pill red">Seguridad</span>
-                </div>
-              </div>
-
-              <div class="card reveal-in">
-                <h3>Machine Learning</h3>
-                <p><strong>Objetivo:</strong> predecir/segmentar/recomendar.</p>
-                <p><strong>Entregables:</strong> dataset, modelo, MLOps.</p>
-                <div class="pill-row">
-                  <span class="pill violet">Métricas</span>
-                  <span class="pill amber">Drift</span>
-                  <span class="pill red">Sesgos</span>
-                </div>
-              </div>
-
-              <div class="card reveal-in">
-                <h3>Deep Learning</h3>
-                <p><strong>Objetivo:</strong> no estructurados.</p>
-                <p><strong>Entregables:</strong> entrenamiento/inferencia, despliegue.</p>
-                <div class="pill-row">
-                  <span class="pill amber">Latencia</span>
-                  <span class="pill violet">Explicabilidad</span>
-                  <span class="pill red">Compliance</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid3" style="margin-top: 14px;">
-              <div class="card reveal-in">
-                <h3>LLM</h3>
-                <p><strong>Entregables:</strong> prompts, guardrails, evaluación, API.</p>
-                <div class="pill-row">
-                  <span class="pill red">Privacidad</span>
-                  <span class="pill violet">Alucinaciones</span>
-                  <span class="pill amber">Costo/token</span>
-                </div>
-              </div>
-
-              <div class="card reveal-in">
-                <h3>RAG</h3>
-                <p><strong>Entregables:</strong> embeddings + base vectorial + trazabilidad.</p>
-                <div class="pill-row">
-                  <span class="pill cyan">Cobertura</span>
-                  <span class="pill amber">Frescura</span>
-                  <span class="pill red">Permisos</span>
-                </div>
-              </div>
-
-              <div class="card reveal-in">
-                <h3>Agentes</h3>
-                <p><strong>Entregables:</strong> tools, políticas, logs, auditoría.</p>
-                <div class="pill-row">
-                  <span class="pill red">Permisos</span>
-                  <span class="pill amber">Pruebas E2E</span>
-                  <span class="pill violet">Rollback</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid3" style="margin-top: 14px;">
-              <div class="card soft reveal-in">
-                <h3>Multiagentes</h3>
-                <p>Roles + orquestación + contratos de mensajes.</p>
-                <div class="pill-row">
-                  <span class="pill amber">Latencia/costo</span>
-                  <span class="pill violet">Observabilidad</span>
-                  <span class="pill red">Fallos parciales</span>
-                </div>
-              </div>
-
-              <div class="card soft reveal-in">
-                <h3>Protocolos (MCP, A2A)</h3>
-                <p>Interoperabilidad segura agente↔herramienta/agente.</p>
-                <div class="pill-row">
-                  <span class="pill violet">Estandarización</span>
-                  <span class="pill cyan">Compatibilidad</span>
-                  <span class="pill red">Auditoría</span>
-                </div>
-              </div>
-
-              <div class="card soft reveal-in">
-                <h3>GenAI en profundidad</h3>
-                <p><strong>LLM:</strong> predice próxima palabra (transformers).</p>
-                <p><strong>Embeddings:</strong> similitud semántica.</p>
-                <p><strong>RAG:</strong> LLM + fuentes externas reduce alucinaciones.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 6: Demo -->
-      <section class="slide" id="s6" data-notes="
-<b>Demo:</b> mostrales por qué RAG + fuentes cambia todo.
-<ul>
-<li>1) Tocá 'Simular alucinación' → respuesta segura pero inventada.</li>
-<li>2) Tocá 'Simular RAG' → respuesta con cautela + fuentes.</li>
-<li>3) Conectá con guardrails: citación + permisos + frescura.</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Mini demo: Alucinación vs RAG</h2>
-            <p class="reveal-in" style="max-width: 85ch;">
-              Misma pregunta. Dos comportamientos. Esto es lo que un PM debe prever y mitigar desde el diseño.
-            </p>
-
-            <div class="demo">
-              <div class="box reveal-in">
-                <label for="q">Pregunta (editable)</label>
-                <textarea id="q">¿Cuál es la política de devolución si una compra llega fallada?</textarea>
-
-                <div class="actions">
-                  <button class="btn bad" id="hallBtn" type="button">🤯 Simular alucinación</button>
-                  <button class="btn good" id="ragBtn" type="button">📚 Simular RAG</button>
-                  <button class="btn" id="clearBtn" type="button">🧹 Limpiar</button>
-                </div>
-
-                <div class="answer" id="answer" style="display:none;">
-                  <div class="hdr">
-                    <div style="font-weight:1000; letter-spacing:-0.02em;">Respuesta</div>
-                    <span class="badge" id="modeBadge">—</span>
-                  </div>
-                  <div id="answerText" style="color: color-mix(in srgb, var(--text) 92%, transparent); line-height:1.55;"></div>
-
-                  <div class="sources" id="sources">
-                    <div class="source"><b>Fuente 1:</b> Política de devoluciones (interna) · Sección “Productos fallados”</div>
-                    <div class="source"><b>Fuente 2:</b> Términos y condiciones · “Plazos y excepciones”</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card soft reveal-in">
-                <h3>Qué mirar como PM</h3>
-                <ul>
-                  <li><strong>Sin RAG</strong>: riesgo de inventar políticas (alucinación).</li>
-                  <li><strong>Con RAG</strong>: exige fuentes, permisos, frescura y trazabilidad.</li>
-                  <li>KPI sugerido: <strong>tasa de alucinación</strong> y <strong>% respuestas con cita</strong>.</li>
-                </ul>
-                <div class="pill-row">
-                  <span class="pill violet">Citación</span>
-                  <span class="pill cyan">Permisos</span>
-                  <span class="pill amber">Frescura</span>
-                  <span class="pill red">Riesgo reputacional</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="card reveal-in">
-              <h3>Conclusión de la demo</h3>
-              <p>
-                RAG no es “magia”: es un <strong>control de conocimiento</strong>. Pero si no gobernás fuentes y accesos,
-                podés terminar con “citas” de información incorrecta o no autorizada.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 7 -->
-      <section class="slide" id="s7" data-notes="
-<b>Guardrails:</b> convertí cada punto en un checklist Go/No-Go para producción.
-<ul>
-<li>HITL: ¿cuándo deriva?</li>
-<li>RAG: ¿qué fuentes? ¿quién aprueba?</li>
-<li>Monitoreo: ¿qué métricas mínimas?</li>
-<li>Legal: ¿responsabilidad y uso de datos?</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Guardrails y buenas prácticas</h2>
-            <p class="reveal-in" style="max-width: 85ch;">
-              Barandillas de diseño + operación para capturar valor sin comprometer seguridad ni reputación.
-            </p>
-
-            <div class="steps">
-              <div class="step reveal-in">
-                <div class="n">1</div>
-                <div class="t">Human in the Loop (HITL)</div>
-                <div class="d">Supervisión humana en interacciones críticas; derivación en casos complejos.</div>
-              </div>
-              <div class="step reveal-in">
-                <div class="n">2</div>
-                <div class="t">RAG + citación de fuentes</div>
-                <div class="d">Usar conocimiento propio y mostrar la fuente cuando sea posible.</div>
-              </div>
-              <div class="step reveal-in">
-                <div class="n">3</div>
-                <div class="t">Monitoreo & observabilidad</div>
-                <div class="d">Métricas: alucinación, precisión, latencia, satisfacción, costo.</div>
-              </div>
-              <div class="step reveal-in">
-                <div class="n">4</div>
-                <div class="t">Cumplimiento legal</div>
-                <div class="d">Cláusulas de uso, propiedad de datos y responsabilidad ante errores.</div>
-              </div>
-            </div>
-
-            <div class="card reveal-in">
-              <h3>Tip operativo</h3>
-              <p>Si no podés medirlo, no lo podés gobernar: guardrails → métricas → rituales de revisión.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 8 -->
-      <section class="slide" id="s8" data-notes="
-<b>Casos:</b> acá activás el timer.
-<ul>
-<li>Recomendación: 12–15 min por caso + 3 min de share out.</li>
-<li>Pedí: 1 KPI + 1 guardrail + 1 riesgo top + 1 mensaje al directorio.</li>
-</ul>
-">
-        <div class="container">
-          <div class="stack">
-            <h2 class="reveal-in">Casos (dos por equipo)</h2>
-            <p class="reveal-in">
-              Dinámica: riesgos → guardrails → KPIs → plan de mitigación y comunicación.
-            </p>
-
-            <div class="cases">
-              <div class="case reveal-in">
-                <div class="tag">🕵️‍♀️ Caso 1 · Caja negra</div>
-                <h3>La caja negra del algoritmo</h3>
-                <p>Inferir tipo de IA, detectar riesgos, proponer guardrails y KPIs para evaluarlo.</p>
-              </div>
-
-              <div class="case reveal-in">
-                <div class="tag">🧪 Caso 2 · Incidente</div>
-                <h3>CSI algorítmico</h3>
-                <p>Investigar qué falló, quién es responsable y armar mitigación + comunicación.</p>
-              </div>
-
-              <div class="case reveal-in">
-                <div class="tag">🚨 Caso 3 · Operación</div>
-                <h3>IA bajo presión</h3>
-                <p>Decisiones rápidas ante crisis: justificar KPIs y comunicar acciones como PM.</p>
-              </div>
-
-              <div class="case reveal-in">
-                <div class="tag">🧩 Caso 4 · Datos</div>
-                <h3>La trampa del dataset</h3>
-                <p>Detectar sesgos/faltantes/errores, explicar impacto y proponer soluciones.</p>
-              </div>
-            </div>
-
-            <div class="card reveal-in">
-              <h3>Cierre</h3>
-              <p>
-                Un proyecto de IA exitoso no es “cero errores”: es <strong>riesgo controlado</strong>,
-                <strong>calidad monitoreada</strong> y <strong>decisiones trazables</strong>.
-              </p>
-              <div class="pill-row">
-                <span class="pill green">Listo para operar</span>
-                <span class="pill violet">Listo para auditar</span>
-                <span class="pill cyan">Listo para escalar</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- Notes Panel -->
-    <aside class="notes" id="notes">
-      <div class="head">
-        <div class="title" id="notesTitle">Speaker Notes</div>
-        <div class="tiny">Atajo: <span class="kbd">S</span> para abrir/cerrar · Se actualiza por slide</div>
-      </div>
-      <div class="body" id="notesBody">
-        Activá las notas con <b>S</b>.
-      </div>
-    </aside>
-  </div>
-
-  <!-- HUD -->
-  <div class="hud" aria-hidden="true">
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="hud-inner">
-      <div id="counter">Slide 1 / 8</div>
-      <div class="hint">
-        <span class="kbd">J</span>/<span class="kbd">K</span> · <span class="kbd">Space</span> ·
-        <span class="kbd">T</span> · <span class="kbd">S</span> · <span class="kbd">R</span>
+        <nav class="links" aria-label="Secciones">
+          <a href="#rol">Rol del PM</a>
+          <a href="#comparativa">Tradicional vs IA</a>
+          <a href="#catalogo">Catálogo</a>
+          <a href="#genai">GenAI en profundidad</a>
+          <a href="#riesgos">Riesgos</a>
+          <a href="#guardrails">Guardrails</a>
+          <a href="#casos">Casos</a>
+        </nav>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Timer Modal -->
-  <div class="modal-backdrop" id="modalBg" role="dialog" aria-modal="true" aria-label="Timer">
-    <div class="modal">
-      <h3>⏱️ Timer para equipos</h3>
-      <p class="tiny">
-        Usalo para los casos. Recomendación: <b>12–15 min</b> trabajo + <b>3 min</b> puesta en común.
+  <main class="container">
+    <!-- HERO -->
+    <div class="hero" id="rol">
+      <span class="kicker"><span class="spark"></span> Perfiles mixtos · práctico · orientado a decisiones</span>
+
+      <h1 class="title">
+        Gestión de Proyectos de <span class="accent">IA & GenAI</span>
+      </h1>
+
+      <p class="subtitle">
+        En IA, el éxito rara vez es binario. Se define por <b>umbrales</b>, se valida con <b>evidencia</b> y se sostiene con
+        <b>monitoreo continuo</b>.
       </p>
 
-      <div class="row">
-        <div class="time" id="time">15:00</div>
+      <div class="hero-grid">
+        <div class="card">
+          <h2>El rol del Project Manager en IA</h2>
+          <div class="meta">
+            <p>
+              En proyectos tradicionales, los sistemas suelen ser determinísticos: ante una misma entrada,
+              la salida es predecible. En IA, el paradigma cambia: el comportamiento es probabilístico.
+              Un mismo input puede producir respuestas distintas y el margen de error nunca se elimina por completo.
+            </p>
+            <p>
+              Por eso, el éxito no se define como “funciona / no funciona”, sino en términos de umbrales relativos:
+              un modelo puede ser “suficientemente bueno” para un caso de uso y no para otro.
+            </p>
+            <p>
+              El PM debe reconocer esta naturaleza probabilística y planificar como un proceso de
+              <b>experimentación iterativa</b>. Además, debe actuar como garante de que las decisiones técnicas
+              se alineen con el marco normativo, políticas internas y valores de la organización.
+            </p>
+          </div>
 
-        <div class="inputs">
-          <input id="minutes" type="number" min="0" max="180" value="15" />
-          <span class="tiny">min</span>
-          <button class="btn" id="setBtn" type="button">Set</button>
-          <button class="btn primary" id="startBtn" type="button">Start</button>
-          <button class="btn" id="pauseBtn" type="button">Pause</button>
-          <button class="btn" id="resetBtn" type="button">Reset</button>
+          <div class="pill-row">
+            <span class="pill violet">Probabilístico</span>
+            <span class="pill cyan">Experimentación</span>
+            <span class="pill green">Monitoreo</span>
+            <span class="pill amber">Umbrales</span>
+            <span class="pill red">Riesgos</span>
+          </div>
+        </div>
+
+        <div class="card soft">
+          <h2>Gestión de riesgos</h2>
+          <div class="meta">
+            <p>
+              En IA, los riesgos no son excepciones: son parte estructural del proyecto.
+              El PM gestiona riesgos técnicos (datos insuficientes, drift, alucinaciones),
+              éticos (sesgos), legales (privacidad/copyright) y operativos (incidentes, costos, reputación).
+            </p>
+            <p>
+              Es clave definir matrices de riesgos, planes de mitigación y un esquema de monitoreo continuo,
+              con responsables claros y criterios de acción.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARATIVA -->
+    <section class="block" id="comparativa">
+      <div class="section-head">
+        <div>
+          <h2>Tradicional vs IA</h2>
+          <p>Determinismo vs probabilismo: cambia la planificación, el QA y la definición de “hecho”.</p>
         </div>
       </div>
 
-      <div class="row" style="justify-content:flex-start;">
-        <button class="btn" data-preset="12" type="button">12 min</button>
-        <button class="btn" data-preset="15" type="button">15 min</button>
-        <button class="btn" data-preset="3" type="button">3 min (share)</button>
-        <button class="btn" id="closeTimer" type="button" style="margin-left:auto;">Cerrar</button>
+      <div class="compare">
+        <div class="side">
+          <h3>Proyectos tradicionales</h3>
+          <div class="meta">
+            <p>
+              Los sistemas tradicionales ofrecen respuestas determinísticas. El éxito suele evaluarse de manera binaria:
+              “funciona” o “no funciona”. El QA se apoya en pruebas reproducibles y cerradas, con resultados esperables.
+            </p>
+          </div>
+        </div>
+
+        <div class="side right">
+          <h3>IA & GenAI</h3>
+          <div class="meta">
+            <p>
+              En IA, el comportamiento es probabilístico. El éxito se define por umbrales y métricas,
+              y el QA se convierte en evaluación continua: cambios en datos o contexto pueden degradar resultados (drift).
+              La gestión de riesgos es parte del ciclo, no un agregado posterior.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <p class="tiny" style="margin-top:10px;">
-        Tip: podés abrir/cerrar con <span class="kbd">R</span>.
-      </p>
-    </div>
-  </div>
+      <div class="card" style="margin-top:14px;">
+        <h3>En una frase</h3>
+        <p class="meta">
+          Planificar IA es planificar un sistema vivo: se ajusta con evidencia, métricas y control de riesgos.
+        </p>
+      </div>
+    </section>
 
-  <script>
-    (function(){
-      const app = document.getElementById('app');
-      const deck = document.getElementById('deck');
-      const bar = document.getElementById('bar');
-      const counter = document.getElementById('counter');
+    <!-- CATALOGO -->
+    <section class="block" id="catalogo">
+      <div class="section-head">
+        <div>
+          <h2>Catálogo AI & GenAI</h2>
+          <p>Qué es · Qué entrega · Qué vigilar (foco en riesgos/éxito).</p>
+        </div>
+      </div>
 
-      const themeBtn = document.getElementById('themeBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const notesBtn = document.getElementById('notesBtn');
-      const timerBtn = document.getElementById('timerBtn');
+      <div class="grid3">
+        <div class="card">
+          <h3>Data Engineering</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> datos confiables y accesibles (pipelines, lake/warehouse).</p>
+            <p><b>Entregables:</b> ETL/ELT, calidad/SLAs, gobierno.</p>
+            <p><b>Vigilar:</b> dependencias, costos cloud, seguridad y ownership.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill cyan">Dependencias</span>
+            <span class="pill amber">Costos cloud</span>
+            <span class="pill red">Seguridad</span>
+            <span class="pill violet">Ownership</span>
+          </div>
+        </div>
 
-      const notesPanel = document.getElementById('notes');
-      const notesTitle = document.getElementById('notesTitle');
-      const notesBody = document.getElementById('notesBody');
+        <div class="card">
+          <h3>Machine Learning</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> predecir/segmentar/recomendar (tabulares).</p>
+            <p><b>Entregables:</b> dataset, modelo (batch/API), MLOps.</p>
+            <p><b>Vigilar:</b> métricas, drift, sesgos, ciclo de mejora.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill violet">Métricas</span>
+            <span class="pill amber">Drift</span>
+            <span class="pill red">Sesgos</span>
+          </div>
+        </div>
 
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const ids = slides.map(s => s.id);
+        <div class="card">
+          <h3>Deep Learning</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> patrones en no estructurados (imagen/audio/texto).</p>
+            <p><b>Entregables:</b> entrenamiento/inferencia, despliegue.</p>
+            <p><b>Vigilar:</b> latencia, explicabilidad y compliance.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill amber">Latencia</span>
+            <span class="pill violet">Explicabilidad</span>
+            <span class="pill red">Compliance</span>
+          </div>
+        </div>
+      </div>
 
-      /* ---------- Reveal animations ---------- */
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if(e.isIntersecting){
-            e.target.querySelectorAll('.reveal-in').forEach((el, i) => {
-              setTimeout(() => el.classList.add('is-visible'), 70 * i);
-            });
-          }
-        });
-      }, { root: deck, threshold: 0.22 });
-      slides.forEach(s => io.observe(s));
+      <div class="grid3" style="margin-top:14px;">
+        <div class="card">
+          <h3>LLM</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> comprender y generar lenguaje (asistentes).</p>
+            <p><b>Entregables:</b> prompts, guardrails, evaluación, integración API.</p>
+            <p><b>Vigilar:</b> privacidad, alucinaciones, costos por token y límites.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill red">Privacidad</span>
+            <span class="pill violet">Alucinaciones</span>
+            <span class="pill amber">Costo/token</span>
+          </div>
+        </div>
 
-      /* ---------- Current slide ---------- */
-      function currentIndex(){
-        const top = deck.scrollTop;
-        let best = 0, bestDist = Infinity;
-        for(let i=0;i<slides.length;i++){
-          const dist = Math.abs(slides[i].offsetTop - top);
-          if(dist < bestDist){ bestDist = dist; best = i; }
-        }
-        return best;
-      }
+        <div class="card">
+          <h3>RAG</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> respuestas con conocimiento propio + trazabilidad.</p>
+            <p><b>Entregables:</b> embeddings, base vectorial, interacciones.</p>
+            <p><b>Vigilar:</b> cobertura, frescura, evaluación (exactitud/citas) y permisos.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill cyan">Cobertura</span>
+            <span class="pill amber">Frescura</span>
+            <span class="pill red">Permisos</span>
+            <span class="pill violet">Citas</span>
+          </div>
+        </div>
 
-      function updateNotes(){
-        const i = currentIndex();
-        const s = slides[i];
-        const title = s.querySelector('h1,h2')?.textContent?.trim() || `Slide ${i+1}`;
-        const raw = s.getAttribute('data-notes') || '—';
-        notesTitle.textContent = title;
-        // Allow limited HTML in notes (we control it in file).
-        notesBody.innerHTML = raw;
-      }
+        <div class="card">
+          <h3>Agentes</h3>
+          <div class="meta">
+            <p><b>Objetivo:</b> perciben–deciden–actúan usando herramientas.</p>
+            <p><b>Entregables:</b> tools/APIs, políticas, logs, auditoría.</p>
+            <p><b>Vigilar:</b> permisos, pruebas E2E, fallos seguros y rollback.</p>
+          </div>
+          <div class="pill-row">
+            <span class="pill red">Permisos</span>
+            <span class="pill amber">Pruebas E2E</span>
+            <span class="pill violet">Rollback</span>
+          </div>
+        </div>
+      </div>
 
-      function updateHUD(){
-        const i = currentIndex();
-        const pct = (i / (slides.length - 1)) * 100;
-        bar.style.width = pct + '%';
-        counter.textContent = `Slide ${i+1} / ${slides.length}`;
-        history.replaceState(null, '', '#' + ids[i]);
-        if(app.classList.contains('notes-open')) updateNotes();
-      }
+      <div class="grid3" style="margin-top:14px;">
+        <div class="card soft">
+          <h3>Multiagentes</h3>
+          <div class="meta">
+            <p>
+              Varios agentes con roles coordinados. Se requiere un orquestador (router/graph) y contratos de mensajes.
+              <b>Vigilar:</b> latencia/costo, observabilidad y fallos parciales.
+            </p>
+          </div>
+          <div class="pill-row">
+            <span class="pill amber">Latencia/costo</span>
+            <span class="pill violet">Observabilidad</span>
+            <span class="pill red">Fallos parciales</span>
+          </div>
+        </div>
 
-      deck.addEventListener('scroll', () => {
-        window.requestAnimationFrame(updateHUD);
-      }, { passive: true });
+        <div class="card soft">
+          <h3>Protocolos (MCP, A2A)</h3>
+          <div class="meta">
+            <p>
+              Estándares para interoperabilidad y comunicación segura agente↔herramienta/agente.
+              <b>Vigilar:</b> estandarización, compatibilidad y auditoría.
+            </p>
+          </div>
+          <div class="pill-row">
+            <span class="pill violet">Estandarización</span>
+            <span class="pill cyan">Compatibilidad</span>
+            <span class="pill red">Auditoría</span>
+          </div>
+        </div>
 
-      function goTo(i){
-        i = Math.max(0, Math.min(slides.length - 1, i));
-        deck.scrollTo({ top: slides[i].offsetTop, behavior: 'smooth' });
-      }
-      function next(){ goTo(currentIndex() + 1); }
-      function prev(){ goTo(currentIndex() - 1); }
+        <div class="card soft" id="genai">
+          <h3>GenAI en profundidad</h3>
+          <div class="meta">
+            <p>
+              La IA Generativa crea contenido nuevo (texto, imágenes, audio, código). Su base típica son los LLM,
+              entrenados con miles de millones de palabras para predecir la siguiente palabra usando transformers.
+            </p>
+            <p>
+              Los <b>embeddings</b> representan significado en vectores para medir similitud semántica.
+              <b>RAG</b> combina un LLM con fuentes externas/propias para reducir alucinaciones y sumar trazabilidad.
+            </p>
+            <p>
+              Un LLM no “entiende” como un humano, pero captura relaciones semánticas, estilo y estructuras,
+              por lo que puede ser un asistente potente si está bien gobernado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      nextBtn.addEventListener('click', next);
+    <!-- RIESGOS -->
+    <section class="block" id="riesgos">
+      <div class="section-head">
+        <div>
+          <h2>Riesgos de la IA Generativa</h2>
+          <p>El objetivo no es evitarlos “por miedo”, sino gestionarlos de forma profesional desde el diseño.</p>
+        </div>
+      </div>
 
-      /* ---------- Theme ---------- */
-      function setTheme(t){
-        document.body.setAttribute('data-theme', t);
-        themeBtn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
-        localStorage.setItem('taller_theme_ultra', t);
-      }
-      themeBtn.addEventListener('click', () => {
-        const curr = document.body.getAttribute('data-theme') || 'dark';
-        setTheme(curr === 'dark' ? 'light' : 'dark');
-      });
+      <div class="grid4">
+        <div class="tile red">
+          <div class="icon">🤯</div>
+          <div class="t">Alucinaciones</div>
+          <div class="d">Puede responder con seguridad algo incorrecto (p. ej., inventar políticas).</div>
+        </div>
+        <div class="tile amber">
+          <div class="icon">⚖️</div>
+          <div class="t">Sesgos</div>
+          <div class="d">Si el entrenamiento tiene estereotipos, el modelo puede discriminar o excluir.</div>
+        </div>
+        <div class="tile cyan">
+          <div class="icon">🔒</div>
+          <div class="t">Privacidad</div>
+          <div class="d">Datos sensibles en prompts/salidas sin controles → riesgo regulatorio y reputacional.</div>
+        </div>
+        <div class="tile gray">
+          <div class="icon">©️</div>
+          <div class="t">Copyright</div>
+          <div class="d">Dilemas por uso/generación de contenido basado en material protegido.</div>
+        </div>
+      </div>
 
-      const savedTheme = localStorage.getItem('taller_theme_ultra');
-      if(savedTheme === 'light' || savedTheme === 'dark') setTheme(savedTheme);
+      <div class="card" style="margin-top:14px;">
+        <h3>Idea clave</h3>
+        <p class="meta">
+          Estos riesgos no son razones para evitar GenAI; son dimensiones críticas de gestión.
+          La diferencia entre un proyecto exitoso y uno problemático es anticiparlos y mitigarlos desde el diseño.
+        </p>
+      </div>
+    </section>
 
-      /* ---------- Notes panel ---------- */
-      function toggleNotes(){
-        const open = app.classList.toggle('notes-open');
-        notesBtn.setAttribute('aria-pressed', open ? 'true' : 'false');
-        if(open) updateNotes();
-      }
-      notesBtn.addEventListener('click', toggleNotes);
+    <!-- GUARDRAILS -->
+    <section class="block" id="guardrails">
+      <div class="section-head">
+        <div>
+          <h2>Guardrails y buenas prácticas</h2>
+          <p>Barandillas de seguridad y operación para capturar valor sin comprometer seguridad ni reputación.</p>
+        </div>
+      </div>
 
-      /* ---------- Jump from hash ---------- */
-      function jumpFromHash(){
-        const h = (location.hash || '').replace('#','');
-        const idx = ids.indexOf(h);
-        if(idx >= 0) deck.scrollTo({ top: slides[idx].offsetTop, behavior: 'auto' });
-      }
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <div class="t">Human in the Loop (HITL)</div>
+          <div class="d">Supervisión humana en interacciones críticas; derivación a humano en casos complejos.</div>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <div class="t">RAG + citación</div>
+          <div class="d">Fuentes propias para evitar inventos y, cuando sea posible, mostrar la fuente.</div>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <div class="t">Monitoreo & observabilidad</div>
+          <div class="d">Métricas continuas: alucinación, precisión, latencia, satisfacción, costo.</div>
+        </div>
+        <div class="step">
+          <div class="n">4</div>
+          <div class="t">Cumplimiento legal</div>
+          <div class="d">Definir uso, propiedad de datos y responsabilidad ante errores con legal/compliance.</div>
+        </div>
+      </div>
 
-      /* ---------- Keyboard shortcuts ---------- */
-      window.addEventListener('keydown', (e) => {
-        const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-        if(tag === 'input' || tag === 'textarea') return;
+      <div class="card" style="margin-top:14px;">
+        <h3>Traducción PM</h3>
+        <p class="meta">
+          Convertí cada guardrail en un check de <b>Go/No-Go</b> antes de producción, y en un conjunto de métricas para operar.
+        </p>
+      </div>
+    </section>
 
-        if(e.key === ' '){ e.preventDefault(); next(); } // Space
-        if(e.key === 'j' || e.key === 'J' || e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); next(); }
-        if(e.key === 'k' || e.key === 'K' || e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
-        if(e.key === 't' || e.key === 'T'){ e.preventDefault(); themeBtn.click(); }
-        if(e.key === 's' || e.key === 'S'){ e.preventDefault(); toggleNotes(); }
-        if(e.key === 'r' || e.key === 'R'){ e.preventDefault(); openTimer(true); }
-        if(e.key === 'g' || e.key === 'G'){ e.preventDefault(); goTo(0); }
-        if(e.key === 'Escape'){
-          if(modalBg.style.display === 'flex') openTimer(false);
-        }
-      });
+    <!-- CASOS -->
+    <section class="block" id="casos">
+      <div class="section-head">
+        <div>
+          <h2>Casos (dos por equipo)</h2>
+          <p>Dinámica: identificar riesgos → proponer guardrails → definir KPIs → plan de mitigación y comunicación.</p>
+        </div>
+      </div>
 
-      /* =========================================================
-         Demo: Hallucination vs RAG (simulated)
-      ========================================================== */
-      const q = document.getElementById('q');
-      const hallBtn = document.getElementById('hallBtn');
-      const ragBtn = document.getElementById('ragBtn');
-      const clearBtn = document.getElementById('clearBtn');
-      const answer = document.getElementById('answer');
-      const answerText = document.getElementById('answerText');
-      const modeBadge = document.getElementById('modeBadge');
-      const sources = document.getElementById('sources');
+      <div class="cases">
+        <div class="case">
+          <div class="tag">🕵️‍♀️ Caso 1 · Caja negra</div>
+          <h3>La caja negra del algoritmo</h3>
+          <p>
+            Te damos un sistema “caja cerrada” (solo entradas/salidas). Tu misión: inferir qué tipo de IA podría ser,
+            detectar riesgos, proponer guardrails y definir KPIs para evaluarlo.
+          </p>
+        </div>
 
-      function showAnswer(mode){
-        const question = (q.value || '').trim() || '—';
-        answer.style.display = 'block';
+        <div class="case">
+          <div class="tag">🧪 Caso 2 · Incidente</div>
+          <h3>CSI algorítmico</h3>
+          <p>
+            Ocurrió un incidente (sesgo, alucinación, alerta falsa). Con un dossier de pistas, investigás qué falló,
+            quién es responsable y armás mitigación + comunicación al directorio y al público.
+          </p>
+        </div>
 
-        if(mode === 'hall'){
-          modeBadge.className = 'badge red';
-          modeBadge.textContent = '🤯 Sin RAG (riesgo de alucinación)';
-          sources.style.display = 'none';
-          answerText.innerHTML =
-            `<p><b>Pregunta:</b> ${escapeHtml(question)}</p>
-             <p style="margin-top:8px;">
-               Sí, podés devolver cualquier compra fallada <b>hasta 90 días</b> después de la entrega,
-               incluso sin comprobante, y recibirás el reintegro completo en <b>24 horas</b>.
-             </p>
-             <p style="margin-top:8px; color: var(--muted);">
-               <i>⚠️ Problema:</i> suena convincente, pero podría ser <b>inventado</b>.
-             </p>`;
-        }
+        <div class="case">
+          <div class="tag">🚨 Caso 3 · Operación</div>
+          <h3>IA bajo presión</h3>
+          <p>
+            Sistema en vivo. Cada 5 minutos aparece una crisis (tweets virales, fuga de datos, costos).
+            Tomás decisiones rápidas, justificás KPIs y comunicás cómo actuarías como PM.
+          </p>
+        </div>
 
-        if(mode === 'rag'){
-          modeBadge.className = 'badge green';
-          modeBadge.textContent = '📚 Con RAG (con fuentes)';
-          sources.style.display = 'flex';
-          answerText.innerHTML =
-            `<p><b>Pregunta:</b> ${escapeHtml(question)}</p>
-             <p style="margin-top:8px;">
-               Según la documentación interna, si el producto llega fallado se inicia un reclamo dentro de
-               un <b>plazo definido</b>, y el proceso contempla validación y opciones de devolución o reemplazo.
-             </p>
-             <p style="margin-top:8px; color: var(--muted);">
-               <i>✅ Ventaja:</i> se apoya en fuentes y permite auditar la respuesta.
-             </p>`;
-        }
-      }
+        <div class="case">
+          <div class="tag">🧩 Caso 4 · Datos</div>
+          <h3>La trampa del dataset</h3>
+          <p>
+            Resultados inconsistentes. Con un dataset “con pistas” (sesgos, faltantes, errores),
+            investigás qué está mal, cómo impacta el modelo y proponés soluciones.
+          </p>
+        </div>
+      </div>
 
-      function escapeHtml(str){
-        return str.replace(/[&<>"']/g, (m) => ({
-          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-        }[m]));
-      }
+      <div class="card" style="margin-top:14px;">
+        <h3>Cierre</h3>
+        <p class="meta">
+          Un proyecto de IA exitoso no es “cero errores”: es <b>riesgo controlado</b>,
+          <b>calidad monitoreada</b> y <b>decisiones trazables</b>.
+        </p>
+      </div>
+    </section>
 
-      hallBtn?.addEventListener('click', () => showAnswer('hall'));
-      ragBtn?.addEventListener('click', () => showAnswer('rag'));
-      clearBtn?.addEventListener('click', () => {
-        q.value = '';
-        answer.style.display = 'none';
-        sources.style.display = 'none';
-      });
+    <footer>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;">
+        <div>© Taller Gestión de Proyectos IA & GenAI · versión web</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="pill violet">Probabilístico</span>
+          <span class="pill cyan">RAG</span>
+          <span class="pill green">Guardrails</span>
+          <span class="pill amber">KPIs</span>
+          <span class="pill red">Riesgos</span>
+        </div>
+      </div>
+    </footer>
 
-      /* =========================================================
-         Timer
-      ========================================================== */
-      const modalBg = document.getElementById('modalBg');
-      const timeEl = document.getElementById('time');
-      const minutesInput = document.getElementById('minutes');
-      const setBtn = document.getElementById('setBtn');
-      const startBtn = document.getElementById('startBtn');
-      const pauseBtn = document.getElementById('pauseBtn');
-      const resetBtn = document.getElementById('resetBtn');
-      const closeTimerBtn = document.getElementById('closeTimer');
+  </main>
 
-      let totalSeconds = 15 * 60;
-      let remaining = totalSeconds;
-      let timer = null;
-      let running = false;
-
-      function formatTime(s){
-        const mm = String(Math.floor(s / 60)).padStart(2,'0');
-        const ss = String(s % 60).padStart(2,'0');
-        return `${mm}:${ss}`;
-      }
-      function renderTime(){
-        timeEl.textContent = formatTime(remaining);
-      }
-      function setMinutes(m){
-        const mins = Math.max(0, Math.min(180, Number(m) || 0));
-        totalSeconds = mins * 60;
-        remaining = totalSeconds;
-        renderTime();
-      }
-      function tick(){
-        if(remaining <= 0){
-          stopTimer();
-          remaining = 0;
-          renderTime();
-          flashTitle('⏰ Tiempo!');
-          return;
-        }
-        remaining -= 1;
-        renderTime();
-      }
-      function startTimer(){
-        if(running) return;
-        running = true;
-        timer = setInterval(tick, 1000);
-      }
-      function stopTimer(){
-        running = false;
-        if(timer){ clearInterval(timer); timer = null; }
-      }
-      function resetTimer(){
-        stopTimer();
-        remaining = totalSeconds;
-        renderTime();
-      }
-      function flashTitle(msg){
-        const old = document.title;
-        document.title = msg;
-        setTimeout(() => document.title = old, 1400);
-      }
-
-      function openTimer(toggle){
-        const isOpen = modalBg.style.display === 'flex';
-        const shouldOpen = (toggle === true) ? !isOpen : Boolean(toggle);
-        modalBg.style.display = shouldOpen ? 'flex' : 'none';
-      }
-
-      timerBtn.addEventListener('click', () => openTimer(true));
-      closeTimerBtn.addEventListener('click', () => openTimer(false));
-      modalBg.addEventListener('click', (e) => {
-        if(e.target === modalBg) openTimer(false);
-      });
-
-      setBtn.addEventListener('click', () => setMinutes(minutesInput.value));
-      startBtn.addEventListener('click', startTimer);
-      pauseBtn.addEventListener('click', stopTimer);
-      resetBtn.addEventListener('click', resetTimer);
-
-      document.querySelectorAll('[data-preset]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const mins = btn.getAttribute('data-preset');
-          minutesInput.value = mins;
-          setMinutes(mins);
-        });
-      });
-
-      // Init time
-      setMinutes(15);
-
-      /* ---------- Init ---------- */
-      jumpFromHash();
-      updateHUD();
-
-    })();
-  </script>
 </body>
 </html>
